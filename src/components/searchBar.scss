@@ -1,0 +1,58 @@
+.search {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    &__icon {
+      height: 4vh;
+      padding: 0.3vw;
+      position: absolute;
+      cursor: pointer;
+      fill: #fff;
+      z-index: 99;
+    }
+    
+    input {
+      height: 3vh;
+      box-shadow: 0 0 0.1vh 0.1vw #193470;
+      border: none;
+      border-radius: 50%;
+      padding: 1vh 1vw;
+      background-color: #092153;
+      outline: none;
+      width: 1.5vmin;
+      transition: 
+        500ms width ease-in-out,
+        500ms padding ease-in-out,
+        500ms border-radius ease-in-out;
+      }
+
+    &-open svg {
+      height: 4vh;
+      padding: 0.3vw;
+      position: absolute;
+      cursor: pointer;
+    }
+    
+    &-open input {
+      height: 1vh;
+      padding: 1.5vh 1vw 1.5vh 2.5vw;
+      background-color: #092153;
+      font-family: inherit;
+      font-size: 2vh;
+      color: #fff;
+      }
+
+  }
+
+  .hidden {
+    clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+  }

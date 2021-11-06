@@ -1,6 +1,8 @@
 # Creating a Meme to Episode Catalogue using React and Astra DB
 
 Credit Ania Kubow
+Credit Angela Delise - tutorial on search bars in scss - converted for use with react and changed styling attributes
+Credit Emma Goto - for accessibility tips for search bar and hidden label css
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -97,3 +99,22 @@ If I wanted to change this table and set the clustering keys to meme_name I coul
   },
   
 }<
+
+
+git commit:
+>git add . && git commit -m 'database live, main body styling complete, header complete  and search bar in progress' && git push
+
+
+mutation {
+  referenceSeasons: createTable(
+    keyspaceName: "office_memes"
+  	tableName: "referenceSeasons",
+    ifNotExists: true
+    partitionKeys: [
+      {name: "label", type: {basic: TEXT}}
+    ]
+    clusteringKeys: [
+      {name: "order_no", type: {basic: INT}, order: "ASC"}
+      {name: "value", type: {basic: TEXT}}
+    ])
+  }

@@ -6,9 +6,10 @@ exports.handler = async function (event) {
     // Queries the database for list of seasons
     const url = process.env.ASTRA_GRAPHQL_ENDPOINT
     const query = `
-        query getAllSeason {
-            reference_list (
+        query getAllSeasons {
+            referenceSeasons (
                 value: {label: "season"},
+                orderBy: [order_no_ASC],
                 options: {limit: ${JSON.stringify(limit)}}
             ) {
             values {

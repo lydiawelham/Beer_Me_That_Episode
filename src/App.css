@@ -7,10 +7,9 @@
 .App-header {
   background-color: #071330;
   min-height: 5vh;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 40vw 60vw;
   align-items: center;
-  justify-content: space-between;
   font-size: calc(10px + 2vmin);
   color: white;
   position: sticky;
@@ -19,9 +18,25 @@
   z-index:1000;
 }
 
+.header-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 3vw;
+}
+
 .App-logo {
   height: 10vmin;
   margin-left: 3vw;
+  margin-right: 1.5vw;
 }
 
 .App-title {
@@ -30,64 +45,10 @@
 
 .header-text {
   font-size: calc(5px + 2vmin);
+  margin-right: 1.5vw;
 }
 
-/* Search bar code: */
-
-.search {
-  position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-svg {
-  height: 4vmin;
-  padding-left: 0.3vw;
-  position: absolute;
-  cursor: pointer;
-}
-
-.search-icon {
-  z-index: 99;
-  fill: #fff;
-}
-
-.search-icon .search:focus  {
-  fill: #7e8eb0;
-}
-
-.search-close {
-  right: 0;
-  visibility: hidden;
-}
-
-.search-close .search:focus {
-  visibility: visible;
-  position:absolute;
-}
-
-.search-input {
-  box-shadow: 0 0 0.1vh 0.1vw #6c85bd;
-  border: none;
-  border-radius: 50%;
-  padding: 1vh 1vw;
-  background-color: #7e8eb0;
-  font-family: inherit;
-  font-size: 2vh;
-  outline: none;
-  width: 1.5vmin;
-  transition: 500ms width ease-in-out,
-    500ms padding ease-in-out,
-    500ms border-radius ease-in-out;
-}
-
-.search-input .search:focus  {
-  width: 10vw;
-  height: 15vh;
-  padding: 1.5vh 1vw 1.5vh 1.5vw;
-  border-radius: 0;
-}
+/* Search bar scss in ./components/searchBar.scss */
 
 .email-icon {
   height: 4vmin;
@@ -98,13 +59,6 @@ svg {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}*/
-
-/*.App-link {
-  color: #C8A2C8;
-  font-size: calc(5px + 2vmin);
-  margin-left: 2vw;
-  margin-right: 2vw;
 }*/
 
 body {
@@ -122,7 +76,7 @@ body {
 }
 
 .Meme-img {
-  width: 100%;
+  width: 17.5vw;
   height: 80%;
   border-radius: 5px;
 }
@@ -132,7 +86,8 @@ body {
 }
 
 .card {
-  width: 17vw;
+  width: 20vw;
+  height: 26vh;
   border-radius: 5px;
   margin: 0.3vw;
   transition: transform 500ms;
@@ -161,6 +116,7 @@ body {
   height: 10vh;
   display: flex;
   padding: 3vh 0;
+  margin-left: -1vw;
 }
 
 .more-button:hover {

@@ -41,7 +41,7 @@ const App = () => {
       body: limit
     });
     const responseBody = await response.json();
-    setSeasons(responseBody.data.reference_list.values);
+    setSeasons(responseBody.data.referenceSeasons.values);
   }
 
   useEffect(() => {
