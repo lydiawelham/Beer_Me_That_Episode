@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# Creating a Meme to Episode Catalogue using React and Astra DB
+
+Credit Ania Kubow
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+Nomenclature: 
+Seasons - collection of memes often by season, but also by character or theme
+Episodes - individual memes (important distinction: in many instances there are multiple memes for each episode)
 
-In the project directory, you can run:
+## TO DO: 
 
-### `npm start`
+- Step 1: Create-react-app
+        - Doing my project on a Raspberry Pi - first step was to install npm 
+- Step 1b: Set up GitHub repo - 
+> git add . && git commit -m "commit msg" && git push
+- Step 2: Create logo in canva
+- Step 3: Create DB with Astra using GraphQL Playground (via API)
+- Step 4: Set up Netlify CLI > set-up netlify functions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Creating a database in Astra using GraphQL API
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Inital set up of database on Astra (GUI?) - keep hold of the keyspace name you have chosen
+2. Generate 'database admin' token (save to CSV)
+3. Enter GraphQL playground using API (provided by Astra)
+4. Enter tokens into GraphQL-Scheme and GraphQL tabs (under http headers):
+        >"x-cassandra-token": ""<
+Remove 'system' from end of URL in GraphQL tab and replace with your keyspace name e.g. "memes_keyspace"
+5. Create two tables - one for seasons (as we intend to order data (memes) by season) and one for episodes (how we will call individual data)
+        ### Table 1: table name: reference_list (table of seasons 1-6)
+        in GraphQL-Schema tab: 
+        >mutation {
+  reference_list: createTable(
+    keyspaceName: "beer_keyspace"
+  	tableName: "reference_list",
+    ifNotExists: true
+    partitionKeys: [
+      {name: "label", type: {basic: INT}
+    ]
+    clusteringKeys: [
+      {name: "value", type: {basic: INT}, order: "ASC"}
+    ]
+    
+  )
+}< 
+This will sort by seasons. In my code I am using INT instead of TEXT as I want to order my seasons numerically. (Perhaps I can do this with strings - who knows with JS?)
 
-### `npm test`
+        ###Table 2: Episodes_by_season
+        >mutation {
+episodes_by_season: createTable (
+  keyspaceName:"beer_keyspace"
+  tableName: "episodes_by_season",
+  ifNotExists: true
+  partitionKeys: [
+    {name: "season", type: {basic: INT}}
+  ]
+  clusteringKeys: [
+    {name: "episode_no", type: {basic: INT}, order: "ASC"},
+    {name: "episode_name", type: {basic: TEXT}, order: "ASC"},
+  ]
+  values: [
+    {name: "meme_name", type: {basic: TEXT}},
+    {name: "meme_img", type: {basic:TEXT}},
+    {name: "netflix_link", type: {basic: TEXT}}
+  ]
+)
+}< 
+We have introduced all the table headers we need, with episode no and episode name allocated as the ones we will sort by. 
+6. Populate seasons values:
+>mutation insertSeasons {
+        One: insertreference_list(value: {label: "season", value: "One"}) {
+                value{value}}
+        }
+}<
+Repeat for each season.
+7. Uploaded CSV of memes/episode data to database on Astra GUI - THIS created new table called office_memes_to_episodes - no need to create episodes_by_season - i.e. skip step 5b 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### In hindsight... 
+I would have set meme_name as the clustering key - as there are multiple memes per episode. I would also have added a 'characters column', and considered setting the reference_list value to the characters in the meme to allow the website to format by into characters for the user to select their favourite.
 
-### `npm run build`
+If I wanted to change this table and set the clustering keys to meme_name I could add a new table and I would need to change the query in getEpisodes.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+7.a. 
+>mutation insertEpisodes {
+  Entry_name : insertmemes_by_season(
+    value:{
+      season: "Three",
+      episode_no: 20,
+      meme_img: "https://media4.giphy.com/media/WZkqBi7EF37YA/giphy.gif?cid=ecf05e47becm6hse19bm5txriv8b3cj20kf6bpskcnxl80fw&rid=giphy.gif&ct=g",
+      alt_name: "Jim says Lord beer me strength",
+      netflix_link: "https://www.netflix.com/watch/70080642",
+      episode_name: "Product Recall",
+      meme_index: 41
+    }
+  ) {
+    value{meme_index}
+  },
+  
+}<
