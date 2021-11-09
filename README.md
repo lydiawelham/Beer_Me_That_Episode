@@ -12,7 +12,7 @@ These lists are supplied by queries to a custom-built Astra DB. I set the databa
 <img width="640" alt="Screenshot 2021-11-09 at 17 01 44" src="https://user-images.githubusercontent.com/90731882/140970638-ce7fe274-4e22-4d06-8800-cb23028cb0d9.png">
 
 
-Special thanks go to Ania Kubow for her Netflix Clone tutorial. 
+Special thanks go to Ania Kubow for her Astra DB tutorial. 
 
 Additional features include: 
 
