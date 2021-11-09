@@ -1,145 +1,15 @@
 # Creating a Meme to Episode Catalogue using React and Astra DB
 
-Adapting netflix clone model for purpose - Credit Ania Kubow (link to youtube?)
+The meme catalogue is designed to answer the burning desire to watch your favourite Office moment when you can’t remember the episode and to act as a gateway from meme peruser to devout fan. The ReactJS app is an adaptation of the Netflix LoLoMo (list of list of movies) model. The catalogue displays a list of lists of The Office gifs, which link on click to the episode they are from on Netflix. Additional seasons (vertical lists) are paginated by scrolling down (on mouse entering page footer) and additional memes (horizontal lists) are paginated by clicking on the right arrow.  
 
-Adaptions: 
-1. Database design: (in hindsight I should have planned this out in advance - to save me from having to edit later) To reference_list table I added an order_no column to control the order seasons are rendered on the page. To memes_by_season, I changed the values to include: 
-- season as a partition key 
-- meme_index (to control order of memes and account for multiple memes per episode) and episode_no as clustering keys
-- episode_name
-- meme_img (URL linking to gif, most from the giphy site)
+These lists are supplied by queries to a custom-built Astra DB. I set the database up using the GraphQL Playground API and the app is supported by Netlify. The project was built and runs on a Raspberry Pi server. I created the logo and svg icons in Canva. 
 
+Special thanks go to Ania Kubow for her Netflix Clone tutorial. 
 
+Additional features include: 
 
-
-
-
-Credit Angela Delise - tutorial on search bars in scss - converted for use with react and changed styling attributes
-Credit Emma Goto - for accessibility tips for search bar and hidden label css
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-Nomenclature: 
-Seasons - collection of memes often by season, but also by character or theme
-Episodes - individual memes (important distinction: in many instances there are multiple memes for each episode)
-
-
-
-
-
-## TO DO: 
-
-- Step 1: Create-react-app
-        - Doing my project on a Raspberry Pi - first step was to install npm 
-- Step 1b: Set up GitHub repo - 
-> git add . && git commit -m "commit msg" && git push
-- Step 2: Create logo in canva
-- Step 3: Create DB with Astra using GraphQL Playground (via API)
-- Step 4: Set up Netlify CLI > set-up netlify functions
-
-## Creating a database in Astra using GraphQL API
-
-1. Inital set up of database on Astra (GUI?) - keep hold of the keyspace name you have chosen
-2. Generate 'database admin' token (save to CSV)
-3. Enter GraphQL playground using API (provided by Astra)
-4. Enter tokens into GraphQL-Scheme and GraphQL tabs (under http headers):
-        >"x-cassandra-token": ""<
-Remove 'system' from end of URL in GraphQL tab and replace with your keyspace name e.g. "memes_keyspace"
-5. Create two tables - one for seasons (as we intend to order data (memes) by season) and one for episodes (how we will call individual data)
-        ### Table 1: table name: reference_list (table of seasons 1-6)
-        in GraphQL-Schema tab: 
-        >mutation {
-  reference_list: createTable(
-    keyspaceName: "beer_keyspace"
-  	tableName: "reference_list",
-    ifNotExists: true
-    partitionKeys: [
-      {name: "label", type: {basic: INT}
-    ]
-    clusteringKeys: [
-      {name: "value", type: {basic: INT}, order: "ASC"}
-    ]
-    
-  )
-}< 
-This will sort by seasons. In my code I am using INT instead of TEXT as I want to order my seasons numerically. (Perhaps I can do this with strings - who knows with JS?)
-
-        ###Table 2: Episodes_by_season
-        >mutation {
-episodes_by_season: createTable (
-  keyspaceName:"beer_keyspace"
-  tableName: "episodes_by_season",
-  ifNotExists: true
-  partitionKeys: [
-    {name: "season", type: {basic: INT}}
-  ]
-  clusteringKeys: [
-    {name: "episode_no", type: {basic: INT}, order: "ASC"},
-    {name: "episode_name", type: {basic: TEXT}, order: "ASC"},
-  ]
-  values: [
-    {name: "meme_name", type: {basic: TEXT}},
-    {name: "meme_img", type: {basic:TEXT}},
-    {name: "netflix_link", type: {basic: TEXT}}
-  ]
-)
-}< 
-We have introduced all the table headers we need, with episode no and episode name allocated as the ones we will sort by. 
-6. Populate seasons values:
->mutation insertSeasons {
-        One: insertreference_list(value: {label: "season", value: "One"}) {
-                value{value}}
-        }
-}<
-Repeat for each season.
-7. Uploaded CSV of memes/episode data to database on Astra GUI - THIS created new table called office_memes_to_episodes - no need to create episodes_by_season - i.e. skip step 5b 
-
-### In hindsight... 
-I would have set meme_name as the clustering key - as there are multiple memes per episode. I would also have added a 'characters column', and considered setting the reference_list value to the characters in the meme to allow the website to format by into characters for the user to select their favourite.
-
-If I wanted to change this table and set the clustering keys to meme_name I could add a new table and I would need to change the query in getEpisodes.js
-
-7.a. 
->mutation insertEpisodes {
-  Entry_name : insertmemes_by_season(
-    value:{
-      season: "Three",
-      episode_no: 20,
-      meme_img: "https://media4.giphy.com/media/WZkqBi7EF37YA/giphy.gif?cid=ecf05e47becm6hse19bm5txriv8b3cj20kf6bpskcnxl80fw&rid=giphy.gif&ct=g",
-      alt_name: "Jim says Lord beer me strength",
-      netflix_link: "https://www.netflix.com/watch/70080642",
-      episode_name: "Product Recall",
-      meme_index: 41
-    }
-  ) {
-    value{meme_index}
-  },
-  
-}<
-
-
-git commit:
->git add . && git commit -m 'database live, main body styling complete, header complete  and search bar in progress' && git push
-
-
-mutation {
-  referenceSeasons: createTable(
-    keyspaceName: "office_memes"
-  	tableName: "referenceSeasons",
-    ifNotExists: true
-    partitionKeys: [
-      {name: "label", type: {basic: TEXT}}
-    ]
-    clusteringKeys: [
-      {name: "order_no", type: {basic: INT}, order: "ASC"}
-      {name: "value", type: {basic: TEXT}}
-    ])
-  }
-
-
-
-
-  ## Next Steps
-  -Set up google analytics 
-  -Continue to add content
-  -Bug fixing: resize issue in firefox with vw, vh - suggested j-query repaint...
+* SEO changes made to meta data
+* Accessibility features, including alt text for all gifs and hidden description for the search bar feature 
+* Database design - addition of index columns to memes and seasons list to control content layout
+* WIP: Search bar added to the header (thanks to Angela Delise for her tutorial on search bar design using SCSS, which I adapted for React) - I am continuing to develop functionality for this using Apache Solr 
+* Bug fixing on page resize issues - page resize is dynamic in Safari, Chrome and some versions of Firefox
