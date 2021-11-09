@@ -1,6 +1,19 @@
 # Creating a Meme to Episode Catalogue using React and Astra DB
 
-Credit Ania Kubow
+Adapting netflix clone model for purpose - Credit Ania Kubow (link to youtube?)
+
+Adaptions: 
+1. Database design: (in hindsight I should have planned this out in advance - to save me from having to edit later) To reference_list table I added an order_no column to control the order seasons are rendered on the page. To memes_by_season, I changed the values to include: 
+- season as a partition key 
+- meme_index (to control order of memes and account for multiple memes per episode) and episode_no as clustering keys
+- episode_name
+- meme_img (URL linking to gif, most from the giphy site)
+
+
+
+
+
+
 Credit Angela Delise - tutorial on search bars in scss - converted for use with react and changed styling attributes
 Credit Emma Goto - for accessibility tips for search bar and hidden label css
 
@@ -9,6 +22,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Nomenclature: 
 Seasons - collection of memes often by season, but also by character or theme
 Episodes - individual memes (important distinction: in many instances there are multiple memes for each episode)
+
+
+
+
 
 ## TO DO: 
 
@@ -118,3 +135,11 @@ mutation {
       {name: "value", type: {basic: TEXT}}
     ])
   }
+
+
+
+
+  ## Next Steps
+  -Set up google analytics 
+  -Continue to add content
+  -Bug fixing: resize issue in firefox with vw, vh - suggested j-query repaint...
