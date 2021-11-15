@@ -19,5 +19,6 @@ Additional features include:
 * SEO changes made to meta element
 * Accessibility features, including alt text for all gifs and hidden description for the search bar feature 
 * Database design - addition of index columns to memes and seasons list to control content layout
-* WIP: Search bar added to the header (thanks to Angela Delise for her tutorial on search bar design using SCSS, which I adapted for React) - I am continuing to develop functionality for this using Apache Solr 
 * Bug fixing on page resize issues - page resize is dynamic in Safari, Chrome and some versions of Firefox
+* WIP: Search bar added to the header (thanks to Angela Delise for her tutorial on search bar design using SCSS, which I adapted for React) - I am continuing to develop functionality for this using Apache Solr 
+* WIP: page will be made dynamic on mobile
