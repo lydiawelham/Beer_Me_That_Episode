@@ -14,7 +14,6 @@
   color: white;
   position: sticky;
   top: 0;
-  font-family: "Helvetica Neue", sans-serif;
   z-index:1000;
 }
 
@@ -43,23 +42,35 @@
   margin-left: 0;
 }
 
+.top-link {
+  text-decoration: none !important;
+  color: #fff;
+}
+
 .header-text {
   font-size: calc(5px + 2vmin);
   margin-right: 1.5vw;
 }
 
-/* Search bar scss in ./components/searchBar.scss */
-
-.email-icon {
-  height: 4vmin;
-  padding-right: 3vw;
+@media only screen and (max-width: 900px) {
+   .header-text {
+      display: none;
+  }
+  .App-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .card{
+    min-width: 21vw;
+  }
+  .episode-section{
+    margin-left: 0.5vw;
+    max-height: 22vmin;
+  }
 }
 
-/*@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}*/
+/* Search bar scss in ./components/searchBar.scss */
 
 body {
   background-color: #141414;
@@ -69,30 +80,16 @@ body {
   margin: 0 3vw;
 }
 
+.season-title {
+  font-weight: normal;
+  font-size: 3vmin;
+}
+
 .episode-section {
   display: flex;
   flex-direction: row;
   padding-left: 4vw;
-}
-
-.Meme-img {
-  width: 17.5vw;
-  height: 80%;
-  border-radius: 5px;
-}
-
-.Alt-text {
-  color: #fff;
-}
-
-.card {
-  width: 17.5vw;
-  height: 26vh;
-  border-radius: 5px;
-  margin: 0.3vw;
-  transition: transform 500ms;
-  position: relative;
-  display: block;
+  max-height: 25vmin;
 }
 
 .episode-section:focus-within .card,
@@ -112,13 +109,50 @@ body {
   z-index: 1;
 }
 
+.card {
+  width: 17.5vw;
+  height: auto;
+  border-radius: 5px;
+  margin: 0.3vw;
+  transition: transform 500ms;
+  position: relative;
+  display: block;
+  background-color: #121212;
+}
+
+@media only screen and (max-width: 600px) {
+  .card{
+    min-width: 27vw;
+    
+  }
+  .episode-section {
+    margin-left: 2vw;
+    max-height: 22vmin;
+  }
+} 
+
+.Meme-img {
+  display: block;
+  width: 100%;
+  height: 80%;
+  border-radius: 5px;
+}
+
+.alt-text {
+  color: #fff;
+  text-decoration: none !important;
+}
+
 .more-button {
   height: 10vh;
-  display: flex;
-  padding: 3vh 0;
+  align-self: center;
+  position: relative;
   margin-left: -1vw;
   z-index: 99;
+  margin-right: -1vw;
 }
+
+/*removed display: flex; from the more-button - in case of error*/
 
 .more-button:hover {
   height: 15vh;
@@ -139,5 +173,5 @@ body {
 .footer-text {
   color: lightgray;
   text-align: center;
-  font-size: 6;
+  font-size: 2vmin;
 }

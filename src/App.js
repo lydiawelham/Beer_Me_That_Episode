@@ -24,7 +24,6 @@ const App = () => {
     fetchData()
   }, [, limit])
 
-
   return (
     <div className="App">
 

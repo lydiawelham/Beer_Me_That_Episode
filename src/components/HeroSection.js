@@ -1,7 +1,9 @@
+//component not currrently implemented
+
 import {useState, useEffect} from 'react'
 
 const HeroSection = () => {
-const [episode, setEpisode] =useState(null);
+const [episode, setEpisode] = useState(null);
     const pageState = null;
     const pageSize = 25;
 

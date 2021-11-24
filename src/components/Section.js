@@ -1,12 +1,25 @@
 import { useEffect, useState} from 'react'
 import Card from './Card'
-import right_arrow from './right_arrow.png'
 
 const Section = ({ season }) => {
 const [episodes, setEpisodes] = useState(null);
 const [pageState, setPageState] = useState(null);
-//sets episodes pagination limit to five per scroll
-const pageSize = 5;
+
+//sets episodes pagination limit to five in window if over 600px or 3 if less than 600px
+var pageSize = 5;
+
+if (window.innerWidth < 600) {
+    pageSize = 3;
+    }
+else if (window.innerWidth >= 600 && window.innerWidth <= 900) {
+    pageSize = 4;
+    }
+else if (window.innerWidth > 900) {
+    pageSize = 5;
+    }
+
+console.log("pageSize", pageSize)
+
 
     //Populates episodes array and collects next pageState for pagination
     const fetchData = async () => {
@@ -17,15 +30,46 @@ const pageSize = 5;
         const responseBody = await response.json();
         setEpisodes(responseBody.data.memes_by_season.values);
         setPageState(responseBody.data.memes_by_season.pageState);
-      }
+    } 
     
-      useEffect(() => {
+    useEffect(() => {
+    fetchData()
+    }, [])
+
+    //if browser window resize occurs, checks whether pagination limit should change and if so reloads page data
+    const updateDimensions = () => {
+    if (window.innerWidth < 600 && pageSize !== 3) {
+        pageSize = 3;
         fetchData()
-      }, [])
+        }
+    else if (window.innerWidth >= 600 && window.innerWidth <= 900 && pageSize !== 4) {
+        pageSize = 4;
+        fetchData()
+        }
+    else if (window.innerWidth > 900 && pageSize !== 5) {
+        pageSize = 5;
+        fetchData()
+        }           
+    }
+
+    var Timeout = false;
+    const resize = () => {
+        if(Timeout !== false)
+        {
+        clearTimeout(Timeout);
+        }
+        Timeout = setTimeout(updateDimensions, 200);
+    }
+
+    useEffect(() => {
+    window.addEventListener("resize", resize, false);
+    }, []);
+
+    console.log("Window Width", window.innerWidth);
 
     return (
         <>
-        <h2 id={season}>{season}</h2>
+        <h2 className="season-title" id={season}>{season}</h2>
         {episodes && (
             <div className="episode-section">
                 {episodes.map((episode, index) => (

@@ -6,6 +6,7 @@ const Header = () => {
   const [isOpen, setOpen] = useState(false);
   const searchInput = document.querySelector("#input-search");
 
+  //changes state of isOpen on search bar click and alters search bar css open /closed accordingly
   const toggleClass = () => {
     setOpen(!isOpen);
     searchInput.focus();
@@ -15,9 +16,9 @@ const Header = () => {
     return(
         <header className="App-header">
           <div  className="header-left">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p className="App-title">
-            Beer Me That Episode </p>
+            <a href="#top"><img src={logo} className="App-logo" alt="logo" /></a>
+            <a href="#top" className="top-link"><p className="App-title">
+            Beer Me That Episode </p></a>
           </div>
         
           <div  className="header-right">
