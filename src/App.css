@@ -155,14 +155,22 @@ body {
 /*removed display: flex; from the more-button - in case of error*/
 
 .more-button:hover {
-  height: 15vh;
+  height: 13vh;
   padding: 2vh 0;
 }
 
+.down-button{
+  height: 15vh;
+  z-index: 99;
+  transform: rotate(90deg);
+}
 .page-end {
   width: 100%;
   height: 30vh;
   background-color: #141414;
+  display: flex;
+  justify-content: center;
+  padding-top: 5vh;
 }
 
 .footer {
