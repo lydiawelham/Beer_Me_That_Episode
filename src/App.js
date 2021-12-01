@@ -28,7 +28,6 @@ const App = () => {
     
   }
 
-
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,14 +36,14 @@ const App = () => {
   useEffect(() => {
     if(search_text !== "")
     {
-      limit = 100;
+      setLimit(100);
     }
     else
     {
-      limit = seasonIncrement;
+      setLimit(seasonIncrement);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  })
+  }, [search_text])
 
   return (
     <div className="App">
@@ -60,11 +59,17 @@ const App = () => {
             ))}
             </div>
           )}
+
+          { search_text === "" &&
+
           <div className="page-end" onMouseEnter={() => {
             setLimit(limit + seasonIncrement)
           }}>
              <svg className="down-button" contentScriptType="text/ecmascript" width="30" zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 30 149.999998" height="149.999998" preserveAspectRatio="xMidYMid meet" version="1.0"><path stroke-linecap="butt" transform="matrix(3.766959, 6.524565, -6.49519, 3.75, 4.598513, 39.256021)" fill="none" stroke-linejoin="miter" d="M 0.000149027 0.000218339 L 5.874144 -0.0000600312 " stroke="rgb(100%, 100%, 100%)" stroke-width="1" stroke-opacity="1" stroke-miterlimit="4"/><path stroke-linecap="butt" transform="matrix(-3.790746, 6.510773, -6.48146, -3.77368, 26.630761, 73.343955)" fill="none" stroke-linejoin="miter" d="M 0.000100417 0.000227447 L 5.874227 -0.0000343804 " stroke="rgb(100%, 100%, 100%)" stroke-width="1" strokeOpacity="1" strokeMiterLimit="4"/></svg>
           </div>
+
+          }
+
         </div>
         <div className="footer">
           <p className="footer-text">Content credit goes to NBC Universal and relevant subsidiaries</p>
