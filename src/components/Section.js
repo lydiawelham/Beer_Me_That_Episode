@@ -4,6 +4,7 @@ import Card from './Card'
 const Section = ({ season, searchText }) => {
 const [episodes, setEpisodes] = useState(null);
 const [pageState, setPageState] = useState(null);
+const [pageIncrement, setPageIncrement] = useState(0);
 
 //sets episodes pagination limit to five in window if over 600px or 3 if less than 600px
 var pageSize = 5;
@@ -22,7 +23,7 @@ else if (window.innerWidth > 900) {
     const fetchData = async () => {
         const response = await fetch("/.netlify/functions/getEpisodes", {
             method: "POST",
-            body: JSON.stringify( { season: season, pageState: pageState, pageSize: pageSize })
+            body: JSON.stringify( { season: season, pageState: pageState })
         });
         const responseBody = await response.json();
         let episodes_filtered = responseBody.data.memes_by_season.values.filter(episode => episode.alt_text.toLowerCase().includes(searchText.toLowerCase()));
@@ -68,6 +69,19 @@ else if (window.innerWidth > 900) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const morebutton = () => {
+        if(pageIncrement+pageSize<episodes.length)
+        {
+            setPageIncrement(pageIncrement+pageSize);
+        }
+        else
+        {
+            setPageIncrement(0);
+        }
+        //setPageState(pageState);
+        fetchData();
+    }
     
     //hide season is there are no episodes
     if(episodes === null || episodes.length === 0)
@@ -80,13 +94,10 @@ else if (window.innerWidth > 900) {
         <h2 className="season-title" id={season}>{season}</h2>
         {episodes && (
             <div className="episode-section">
-                {episodes.slice().map((episode, index) => (
+                {episodes.slice(pageIncrement,pageIncrement+pageSize).map((episode, index) => (
                 <Card key={index} episode={episode}/>
                 ))}
-                <div className="more-button" onClick={() => {
-                    setPageState(pageState)
-                    fetchData()
-                }}>
+                <div className="more-button" onClick={morebutton}>
                     <svg className="more-button" contentScriptType="text/ecmascript" width="30" zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 30 149.999998" height="149.999998" preserveAspectRatio="xMidYMid meet" version="1.0"><path stroke-linecap="butt" transform="matrix(3.766959, 6.524565, -6.49519, 3.75, 4.598513, 39.256021)" fill="none" stroke-linejoin="miter" d="M 0.000149027 0.000218339 L 5.874144 -0.0000600312 " stroke="rgb(100%, 100%, 100%)" stroke-width="1" stroke-opacity="1" stroke-miterlimit="4"/><path stroke-linecap="butt" transform="matrix(-3.790746, 6.510773, -6.48146, -3.77368, 26.630761, 73.343955)" fill="none" stroke-linejoin="miter" d="M 0.000100417 0.000227447 L 5.874227 -0.0000343804 " stroke="rgb(100%, 100%, 100%)" stroke-width="1" stroke-opacity="1" stroke-miterlimit="4"/></svg>
                 </div>
             </div>

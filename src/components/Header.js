@@ -13,7 +13,7 @@ const Header = ({onSearch}) => {
     searchInput.value = "";
   };
 
-  const onKeyDownHandler = e => {
+  const onKeyUpHandler = e => {
       onSearch(searchInput.value);
   };
 
@@ -34,7 +34,7 @@ const Header = ({onSearch}) => {
                   <label htmlFor="input-search">
                     <span className="hidden">Search for a meme</span>
                   </label>
-                  <input type="text" id="input-search" className="search__input" autoFocus placeholder=" " onKeyUp={onKeyDownHandler}></input>
+                  <input type="text" id="input-search" className="search__input" autoFocus placeholder=" " onKeyUp={onKeyUpHandler}></input>
               </div>
           </div>
       </header>

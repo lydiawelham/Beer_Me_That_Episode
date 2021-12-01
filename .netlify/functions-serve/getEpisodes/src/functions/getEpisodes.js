@@ -4750,14 +4750,13 @@ exports.handler = async function(event) {
   const body = JSON.parse(event.body);
   const season = body.season;
   const pageState = body.pageState;
-  const pageSize = body.pageSize;
   const url = process.env.ASTRA_GRAPHQL_ENDPOINT;
   const query = `
         query {
             memes_by_season (
                 value: {season: ${JSON.stringify(season)}},
                 orderBy: [meme_index_ASC]
-                options: {pageSize: ${JSON.stringify(pageSize)}, pageState: ${JSON.stringify(pageState)}}
+                options: {pageState: ${JSON.stringify(pageState)}}
             ) {
                 values {
                     episode_no
