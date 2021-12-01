@@ -35,7 +35,14 @@ const App = () => {
   }, [limit])
 
   useEffect(() => {
-    console.log(search_text);
+    if(search_text !== "")
+    {
+      limit = 100;
+    }
+    else
+    {
+      limit = seasonIncrement;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   })
 
