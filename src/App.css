@@ -105,7 +105,9 @@ body {
 
 .episode-section .card:focus,
 .episode-section .card:hover {
-  transform: scale(1.5);
+  transform: scale(1.55);
+  margin-left: 0.6vw;
+  margin-right: 0.6vw;
   z-index: 1;
 }
 
@@ -117,7 +119,8 @@ body {
   transition: transform 500ms;
   position: relative;
   display: block;
-  background-color: #121212;
+  background-color: #141414;
+  font-size: 2vmin;
 }
 
 @media only screen and (max-width: 600px) {
@@ -128,6 +131,10 @@ body {
   .episode-section {
     margin-left: 2vw;
     max-height: 22vmin;
+  }
+
+  .App-title {
+    font-size: 3.75vw;
   }
 } 
 

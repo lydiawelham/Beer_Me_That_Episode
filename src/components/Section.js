@@ -1,7 +1,7 @@
 import { useEffect, useState} from 'react'
 import Card from './Card'
 
-const Section = ({ season }) => {
+const Section = ({ season, searchText }) => {
 const [episodes, setEpisodes] = useState(null);
 const [pageState, setPageState] = useState(null);
 
@@ -18,9 +18,6 @@ else if (window.innerWidth > 900) {
     pageSize = 5;
     }
 
-console.log("pageSize", pageSize)
-
-
     //Populates episodes array and collects next pageState for pagination
     const fetchData = async () => {
         const response = await fetch("/.netlify/functions/getEpisodes", {
@@ -28,13 +25,18 @@ console.log("pageSize", pageSize)
             body: JSON.stringify( { season: season, pageState: pageState, pageSize: pageSize })
         });
         const responseBody = await response.json();
-        setEpisodes(responseBody.data.memes_by_season.values);
+        let episodes_filtered = responseBody.data.memes_by_season.values.filter(episode => episode.alt_text.toLowerCase().includes(searchText.toLowerCase()));
+        setEpisodes(episodes_filtered);
         setPageState(responseBody.data.memes_by_season.pageState);
-    } 
+    }
     
     useEffect(() => {
     fetchData()
-    }, [])
+    console.log(searchText);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchText])
+
+
 
     //if browser window resize occurs, checks whether pagination limit should change and if so reloads page data
     const updateDimensions = () => {
@@ -58,21 +60,27 @@ console.log("pageSize", pageSize)
         {
         clearTimeout(Timeout);
         }
-        Timeout = setTimeout(updateDimensions, 200);
+        Timeout = setTimeout(updateDimensions, 1000);
     }
 
     useEffect(() => {
-    window.addEventListener("resize", resize, false);
-    }, []);
+    window.addEventListener("resize", resize);
 
-    console.log("Window Width", window.innerWidth);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    
+    //hide season is there are no episodes
+    if(episodes === null || episodes.length === 0)
+    {
+        return <div />
+    }
 
     return (
         <>
         <h2 className="season-title" id={season}>{season}</h2>
         {episodes && (
             <div className="episode-section">
-                {episodes.map((episode, index) => (
+                {episodes.slice().map((episode, index) => (
                 <Card key={index} episode={episode}/>
                 ))}
                 <div className="more-button" onClick={() => {
