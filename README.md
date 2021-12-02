@@ -1,5 +1,7 @@
 # Creating a Meme to Episode Catalogue using React and Astra DB
 
+LIVE at: [beermethatepisode.com](https://www.beermethatepisode.com)
+
 The meme catalogue is designed to answer the burning desire to watch your favourite Office moment when you can’t remember the episode and to act as a gateway from meme peruser to devout fan. The ReactJS app is an adaptation of the Netflix LoLoMo (list of list of movies) model. The catalogue displays a list of lists of The Office gifs, which link on click to the episode they are from on Netflix. Additional seasons (vertical lists) are paginated by scrolling down (on mouse entering page footer) and additional memes (horizontal lists) are paginated by clicking on the right arrow.  
 
 
@@ -20,5 +22,5 @@ Additional features include:
 * Accessibility features, including alt text for all gifs and hidden description for the search bar feature 
 * Database design - addition of index columns to memes and seasons list to control content layout
 * Bug fixing on page resize issues - page resize is dynamic in Safari, Chrome and some versions of Firefox
-* WIP: Search bar added to the header (thanks to Angela Delise for her tutorial on search bar design using SCSS, which I adapted for React) - I am continuing to develop functionality for this using Apache Solr 
-* WIP: page will be made dynamic on mobile
+* Search bar added to the header (thanks to Angela Delise for her tutorial on search bar design using SCSS, which I adapted for React)
+* Page is dynamic on mobile
