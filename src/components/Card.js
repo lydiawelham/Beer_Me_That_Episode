@@ -10,15 +10,15 @@ const Card = ({episode}) => {
             onMouseLeave={() => setIsShown(false)}
         >
             {!isShown && 
-            (<a href={episode.netflix_link} target="_blank" rel="noopener noreferrer">
-            <img className="Meme-img" src={episode.meme_img} alt={episode.alt_text} />
+            (<a className="alt-text" href={episode.netflix_link} target="_blank" rel="noopener noreferrer">
+            <img className="meme-img" src={episode.meme_img} alt={episode.alt_text} />
             </a>)}
 
             {isShown && 
             (
             <>
             <a className="alt-text" href={episode.netflix_link} target="_blank" rel="noopener noreferrer">
-            <img className="Meme-img" src={episode.meme_img} alt={episode.alt_text} />
+            <img className="meme-img" src={episode.meme_img} alt={episode.alt_text} />
             </a>
             <div className="info-box">
                 <p>{episode.episode_name}</p>

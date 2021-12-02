@@ -9,7 +9,10 @@ const [pageIncrement, setPageIncrement] = useState(0);
 //sets episodes pagination limit to five in window if over 600px or 3 if less than 600px
 var pageSize = 5;
 
-if (window.innerWidth < 600) {
+if (window.innerWidth < 400){
+    pageSize = 2;
+}
+else if (window.innerWidth <= 600 && window.innerWidth >= 400) {
     pageSize = 3;
     }
 else if (window.innerWidth >= 600 && window.innerWidth <= 900) {
@@ -18,6 +21,7 @@ else if (window.innerWidth >= 600 && window.innerWidth <= 900) {
 else if (window.innerWidth > 900) {
     pageSize = 5;
     }
+
 
     //Populates episodes array and collects next pageState for pagination
     const fetchData = async () => {
